@@ -21,6 +21,7 @@ yarn hardhat
 ```bash
 yarn add --dev @aave/protocol-v2
 ```
+after importing @aave, use ```bash yarn hardhat compile ```
 
 ```bash
 yarn add --dev @nomiclabs/hardhat-ethers@npm:hardhat-deploy-ethers ethers @nomiclabs/hardhat-etherscan @nomiclabs/hardhat-waffle chai ethereum-waffle hardhat hardhat-contract-sizer hardhat-deploy hardhat-gas-reporter prettier prettier-plugin-solidity solhint solidity-coverage dotenv
@@ -28,17 +29,8 @@ yarn add --dev @nomiclabs/hardhat-ethers@npm:hardhat-deploy-ethers ethers @nomic
 
 ## Usage
 
-```python
-import foobar
-
-# returns 'words'
-foobar.pluralize('word')
-
-# returns 'geese'
-foobar.pluralize('goose')
-
-# returns 'phenomenon'
-foobar.singularize('phenomena')
+```javascript
+yarn hardhat run scripts/aaveBorrow.js
 ```
 
 ## Contributing
