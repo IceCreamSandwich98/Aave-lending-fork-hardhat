@@ -1,10 +1,9 @@
-1. Deposite collateral || ETH --> WETH
-2. borrow another asset: DAI or USDC
-3. Repay the DAI
 
-# Foobar
 
-Foobar is a Python library for dealing with word pluralization.
+# Aave Borrow forking
+I wanted to be confident enough to be able to use a forked on-chain protocol and access its functions.This projects requires three steps, depositing collateral, borrowing funds, then repaying those borrow funds. FIrst i used Aave's deposit funciton to deposit Eth in the form of WEth(ERC-20). After that, i got the lendingPoolAddressProvider, in order to access a function which gives me the lending pool access provider, to borrow collateral in the form of DAI. After this, i use the repay function to repay the borrowed funds. I still need to add
+1.) function that takes borrowed funds + intrest in order to fully pay back debt.
+
 
 ## Installation
 
@@ -33,12 +32,6 @@ yarn add --dev @nomiclabs/hardhat-ethers@npm:hardhat-deploy-ethers ethers @nomic
 yarn hardhat run scripts/aaveBorrow.js
 ```
 
-## Contributing
-
-Pull requests are welcome. For major changes, please open an issue first
-to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
 
 ## License
 
