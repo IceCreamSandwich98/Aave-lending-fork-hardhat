@@ -1,6 +1,7 @@
 //imports
 const { ethers, getNamedAccounts } = require("hardhat")
 const { getWeth, AMOUNT } = require("../scripts/getWeth")
+require("dotenv").config()
 
 async function main() {
     //AAVE protocol treats everything as a erc-20 token
@@ -16,7 +17,7 @@ async function main() {
 
     //deposit!! @ILendingPool deposite func. takes 4 params. asset, amount, address on behave of, and referal code
 
-    const wethTokenAddress = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    const wethTokenAddress = process.env.WETH_TOKEN_ADDRESS
     // const wethTokenAmount =
     // const borrowedAsset =
     await approvErc20(wethTokenAddress, lendingPool.address, AMOUNT, deployer)
@@ -44,7 +45,7 @@ async function main() {
     //how much we have borrow, how much we have in collateral, how much we CAN borrow
     //aavs docs has a function called "getUserAccountData()", which gives total colateral, total debt, avaliable borrow, current liq,
 
-    const daiTokenAddress = "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+    const daiTokenAddress = process.env.DAI_TOKEN_ADDRESS
     await borrowDai(
         daiTokenAddress,
         lendingPool,
@@ -52,6 +53,19 @@ async function main() {
         deployer
     )
     await getBorrowUserData(lendingPool, deployer)
+    await repay(amountDaiToBorrowInWei, daiTokenAddress, lendingPool, deployer)
+    await getBorrowUserData(lendingPool, deployer)
+
+    //we have sucessfully deposited collateral in aave, and have borrowed dai
+    //now we need a repay function to pay back the borrowed dai (see aave docs for function / s)
+}
+
+async function repay(amount, daiAddress, lendingPool, account) {
+    //we need to approve sending out DAI back to aave, call approve func
+    await approvErc20(daiAddress, lendingPool.address, amount, account)
+    const repayTx = await lendingPool.repay(daiAddress, amount, 1, account)
+    await repayTx.wait(1)
+    console.log("Repayed")
 }
 
 async function borrowDai(
@@ -75,7 +89,7 @@ async function borrowDai(
 async function getDaiPrice() {
     const daiEthPriceFeed = await ethers.getContractAt(
         "AggregatorV3Interface",
-        "0x773616E4d11A78F511299002da57A0a94577F1f4"
+        process.env.DAI_ETH_PRICEFEED
         //if we are reading form a contract, we dont need a signer
         //everything else, we need a signer
     )
@@ -111,7 +125,7 @@ async function getLendingPool(account) {
 
     const lendingPoolAddressProvider = await ethers.getContractAt(
         "ILendingPoolAddressesProvider", //abi from @aave/protocols-v2 add via yarn
-        "0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5", //contract from docs.avve.com addressprovider
+        process.env.LENDING_POOL_ADDRESS_PROVIDER, //contract from docs.avve.com addressprovider
         account //parameter
     )
     //get addy
