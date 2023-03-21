@@ -28,6 +28,8 @@ yarn add --dev @nomiclabs/hardhat-ethers@npm:hardhat-deploy-ethers ethers @nomic
 
 ## Usage
 
+allows to interact with the aave protocol on a forked mainnet. No optomized for a mainnet release, but the foundational pieces of depositing collateral, borrowing, and repaying is present
+
 ```javascript
 yarn hardhat run scripts/aaveBorrow.js
 ```
